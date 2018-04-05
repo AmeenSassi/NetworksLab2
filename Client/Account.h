@@ -11,6 +11,7 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
+#include <vector>
 
 using namespace std;
 
@@ -31,7 +32,7 @@ class Account {
             string name;
             string number;
             string email;
-            Appointments apps[];
+            vector<Appointments> apps;
             int numApps;
 
     

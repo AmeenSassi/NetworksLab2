@@ -14,8 +14,8 @@
 
 using namespace std;
 
-#ifndef FUNCTIONS_H
-#define FUNCTIONS_H
+#ifndef CLIENTFUNCTIONS_H
+#define CLIENTFUNCTIONS_H
 
 //User functions
 void addUser();
@@ -31,5 +31,6 @@ void displayApps(Account);
 
 //Basic functions
 Account getUser(string);
+void start();
 
 #endif
