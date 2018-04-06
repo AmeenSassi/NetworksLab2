@@ -43,6 +43,7 @@ class Account {
             string username;
 
             Account(string, string, string, string, string);
+
             void AddApp(string, string, string, string, string, string);
             
             void setUsername(string);

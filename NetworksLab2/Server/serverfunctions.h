@@ -18,10 +18,10 @@ using namespace std;
 #define SERVERFUNCTIONS_H
 
 //User functions
-void addUser();
+void SignUp();
 void deleteUser(Account);
-void updateUser(Account);
-void Login(Account);
+void updateUser(int, int, char*, Account);
+void Login(int, int, char*, Account);
 
 //Appointment functions
 void addApp(Account);

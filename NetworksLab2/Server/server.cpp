@@ -78,7 +78,7 @@ int main(void)
         printf("server: got connection from %s\n",(char *) inet_ntoa(their_addr.sin_addr));
         if (!fork()) { // this is the child process
             close(sockfd); // child doesn't need the listener
-	    recvbuf=(char *) calloc(128,sizeof(char));
+	        recvbuf=(char *) calloc(128,sizeof(char));
             for(;;) {
 	    	numbytes=recv(new_fd,recvbuf,128,0);
 		if (numbytes < 0) {

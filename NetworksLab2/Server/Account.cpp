@@ -9,6 +9,14 @@
 
 using namespace std;
 
+Account::Account(string uname, string pass, string n, string phone, string mail){
+    this->username = uname;
+    this->password = pass;
+    this->name = n;
+    this->number = phone;
+    this->email = mail;
+}
+
 void Account::setUsername(string uname){
     this->username = uname;
 }
