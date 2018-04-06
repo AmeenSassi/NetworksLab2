@@ -20,8 +20,11 @@ using namespace std;
 
 struct Appointments {
     string username;
-    string date;
-    string time;
+    string startDate;
+    string startTime;
+    string endDate;
+    string endTime;
+    string location;
     string event;
 };
 
@@ -39,14 +42,22 @@ class Account {
     public:
             string username;
 
+            Account(string, string, string, string, string);
+            void AddApp(string, string, string, string, string, string);
+            
+            void setUsername(string);
+            void setPassword(string);
+            void setName(string);
+            void setNumber(string);
+            void setEmail(string);
+
             string getUsername();
             string getPassword();
             string getName();
             string getNumber();
             string getEmail();
 
+            void printSchedule();
+};
 
-//TODO - Finish this class and begin working on functions.cpp
-
-
-}
+#endif

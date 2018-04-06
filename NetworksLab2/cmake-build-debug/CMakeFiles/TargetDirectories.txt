@@ -1,0 +1,3 @@
+C:/Users/ameen/Desktop/Networks/Assignments/Lab 2/NetworksLab2/NetworksLab2/cmake-build-debug/CMakeFiles/NetworksLab2.dir
+C:/Users/ameen/Desktop/Networks/Assignments/Lab 2/NetworksLab2/NetworksLab2/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/ameen/Desktop/Networks/Assignments/Lab 2/NetworksLab2/NetworksLab2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
