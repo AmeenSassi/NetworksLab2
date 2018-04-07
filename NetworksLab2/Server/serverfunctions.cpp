@@ -13,7 +13,7 @@
 #include <sys/socket.h>
 #include "Account.h"
 #include "serverfunctions.h"
-#include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -50,15 +50,15 @@ void updateUser(int new_fd, int numbytes, char* recvbuf, Account* acc){
     char* mess;
 
     numbytes = recv(new_fd,recvbuf,128,0);
-    acc.username = recvbuf;
+    acc->setUsername(recvbuf);
     numbytes = recv(new_fd,recvbuf,128,0);
-    acc.password = recvbuf;
+    acc->setPassword(recvbuf);
     numbytes = recv(new_fd,recvbuf,128,0);
-    acc.name = recvbuf;
+    acc->setName(recvbuf);
     numbytes = recv(new_fd,recvbuf,128,0);
-    acc.phone = recvbuf;
+    acc->setNumber(recvbuf);
     numbytes = recv(new_fd,recvbuf,128,0);
-    acc.email = recvbuf;
+    acc->setEmail(recvbuf);
 
     if(userExists(username)) {
         acc = Account(username, password, name, phone, email);
@@ -73,6 +73,7 @@ void updateUser(int new_fd, int numbytes, char* recvbuf, Account* acc){
 }
 
 void Login(int new_fd, int numbytes, char* recvbuf){
+    char* mess;
 
     numbytes = recv(new_fd,recvbuf,128,0);
     string username = recvbuf;
@@ -102,11 +103,47 @@ void Login(int new_fd, int numbytes, char* recvbuf){
 void addApp(Account*){
 
 }
+
 void removeApp(Account);
 void updateApp(Account);
 void displayApps(Account);
 
 //Basic functions
-Account getUser(string);
+Account getUser(string uname){
+    string file = uname + ".txt";
+    ifstream userList;
+    userList.open(file);
+    while(!userList.eof()){
+
+        string user;
+        string pass;
+        string name;
+        string email;
+        string phone;
+
+        getline(userList, user, '\n');
+        getline(userList, pass, '\n');
+        getline(userList, name, '\n');
+        getline(userList, email, '\n');
+        getline(userList, phone, '\n');
+
+        string sd;
+        string st;
+        string ed;
+        string et;
+        string loc;
+        string ev;
+
+        getline(userList, sd, '\n');
+        getline(userList, sd, ',');
+        getline(userList, st, '.');
+        getline(userList, ed, ',');
+        getline(userList, et, '.');
+        getline(userList, loc, '.');
+        getline(userList, ev, '.');
+
+    }
+
+}
 
 #endif

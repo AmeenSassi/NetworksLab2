@@ -74,10 +74,10 @@ void Account::printSchedule(){
 
     for (vector<Appointments>::const_iterator i = apps.begin(); i != apps.end(); ++i){
         appNum++;
-        cout << "Appointment " + appNum << endl;
-        cout << "Start: " + i->startDate + ", " + i->startTime + "." << endl;
-        cout << "End: " + i->endDate + ", " + i->endTime + "." << endl;
-        cout << "Location: " + i->location + "." << endl;
+        cout << appNum << endl;
+        cout << i->startDate + ", " + i->startTime + "." << endl;
+        cout << i->endDate + ", " + i->endTime + "." << endl;
+        cout << i->location + "." << endl;
         cout << i->event + "." << endl;
     }
  

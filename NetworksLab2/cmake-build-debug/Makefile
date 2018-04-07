@@ -122,32 +122,32 @@ NetworksLab2/fast:
 	$(MAKE) -f CMakeFiles\NetworksLab2.dir\build.make CMakeFiles/NetworksLab2.dir/build
 .PHONY : NetworksLab2/fast
 
-Server/Account.obj: Server/Account.cpp.obj
+Server/serverfunctions.obj: Server/serverfunctions.cpp.obj
 
-.PHONY : Server/Account.obj
+.PHONY : Server/serverfunctions.obj
 
 # target to build an object file
-Server/Account.cpp.obj:
-	$(MAKE) -f CMakeFiles\NetworksLab2.dir\build.make CMakeFiles/NetworksLab2.dir/Server/Account.cpp.obj
-.PHONY : Server/Account.cpp.obj
+Server/serverfunctions.cpp.obj:
+	$(MAKE) -f CMakeFiles\NetworksLab2.dir\build.make CMakeFiles/NetworksLab2.dir/Server/serverfunctions.cpp.obj
+.PHONY : Server/serverfunctions.cpp.obj
 
-Server/Account.i: Server/Account.cpp.i
+Server/serverfunctions.i: Server/serverfunctions.cpp.i
 
-.PHONY : Server/Account.i
+.PHONY : Server/serverfunctions.i
 
 # target to preprocess a source file
-Server/Account.cpp.i:
-	$(MAKE) -f CMakeFiles\NetworksLab2.dir\build.make CMakeFiles/NetworksLab2.dir/Server/Account.cpp.i
-.PHONY : Server/Account.cpp.i
+Server/serverfunctions.cpp.i:
+	$(MAKE) -f CMakeFiles\NetworksLab2.dir\build.make CMakeFiles/NetworksLab2.dir/Server/serverfunctions.cpp.i
+.PHONY : Server/serverfunctions.cpp.i
 
-Server/Account.s: Server/Account.cpp.s
+Server/serverfunctions.s: Server/serverfunctions.cpp.s
 
-.PHONY : Server/Account.s
+.PHONY : Server/serverfunctions.s
 
 # target to generate assembly for a file
-Server/Account.cpp.s:
-	$(MAKE) -f CMakeFiles\NetworksLab2.dir\build.make CMakeFiles/NetworksLab2.dir/Server/Account.cpp.s
-.PHONY : Server/Account.cpp.s
+Server/serverfunctions.cpp.s:
+	$(MAKE) -f CMakeFiles\NetworksLab2.dir\build.make CMakeFiles/NetworksLab2.dir/Server/serverfunctions.cpp.s
+.PHONY : Server/serverfunctions.cpp.s
 
 # Help Target
 help:
@@ -158,9 +158,9 @@ help:
 	@echo ... NetworksLab2
 	@echo ... edit_cache
 	@echo ... rebuild_cache
-	@echo ... Server/Account.obj
-	@echo ... Server/Account.i
-	@echo ... Server/Account.s
+	@echo ... Server/serverfunctions.obj
+	@echo ... Server/serverfunctions.i
+	@echo ... Server/serverfunctions.s
 .PHONY : help
 
 
