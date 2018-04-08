@@ -80,5 +80,4 @@ void Account::printSchedule(){
         cout << i->location + "." << endl;
         cout << i->event + "." << endl;
     }
- 
 }

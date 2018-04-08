@@ -44,6 +44,7 @@ void addUser(int new_fd, int numbytes, char* recvbuf){
     }
 
 }
+
 void deleteUser(Account);
 
 void updateUser(int new_fd, int numbytes, char* recvbuf, Account* acc){
@@ -104,14 +105,28 @@ void addApp(Account*){
 
 }
 
-void removeApp(Account);
-void updateApp(Account);
-void displayApps(Account);
+void removeApp(Account*, int);
+
+void updateApp(Account* acc, int appNum) {
+    Account user;
+    *user = acc;
+
+    acc->apps[appNum].;
+
+
+}
+
+void displayAll(Account* user) {
+    Account acc = user;
+
+
+}
 
 //Basic functions
 Account getUser(string uname){
     string file = uname + ".txt";
     ifstream userList;
+    Account userAccount;
     userList.open(file);
     while(!userList.eof()){
 
@@ -127,6 +142,8 @@ Account getUser(string uname){
         getline(userList, email, '\n');
         getline(userList, phone, '\n');
 
+        userAccount = Account(user,pass,name,email,phone);
+
         string sd;
         string st;
         string ed;
@@ -134,16 +151,31 @@ Account getUser(string uname){
         string loc;
         string ev;
 
-        getline(userList, sd, '\n');
-        getline(userList, sd, ',');
-        getline(userList, st, '.');
-        getline(userList, ed, ',');
-        getline(userList, et, '.');
-        getline(userList, loc, '.');
-        getline(userList, ev, '.');
+        while(!userList.eof()){
+            getline(userList, sd, '\n');
+            getline(userList, sd, ',');
+            getline(userList, st, '.');
+            getline(userList, ed, ',');
+            getline(userList, et, '.');
+            getline(userList, loc, '.');
+            getline(userList, ev, '.');
 
+            userAccount.AddApp(sd, st, ed, et, loc, ev);
+        }
     }
-
+    return userAccount;
 }
 
+bool userExists(string uname){
+    ifstream userList;
+    string user;
+    userList.open("userList.txt");
+    while(!userList.eof()){
+        getline(userList, user, '\n');
+        if(user.compare(uname)){
+            return true;
+        }
+    }
+    return false;
+}
 #endif
