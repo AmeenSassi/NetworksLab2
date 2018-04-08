@@ -18,7 +18,7 @@ using namespace std;
 #ifndef ACCOUNT_H
 #define ACCOUNT_H
 
-struct Appointments {
+struct Appointment {
     string username;
     string startDate;
     string startTime;
@@ -35,16 +35,18 @@ class Account {
             string name;
             string number;
             string email;
-            vector<Appointments> apps;
-            int numApps;
-
+            vector<Appointment> apps;
     
     public:
             string username;
 
             Account(string, string, string, string, string);
+            Account();
 
+            Appointment getApp(int);
+            void setApp(int, Appointment);
             void AddApp(string, string, string, string, string, string);
+            void removeApp(int i);
             
             void setUsername(string);
             void setPassword(string);
@@ -59,6 +61,7 @@ class Account {
             string getEmail();
 
             void printSchedule();
+            void uploadApps(string);
 };
 
 #endif

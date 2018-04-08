@@ -82,6 +82,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="C:/Users/ameen/Desktop/Networks/Assignments/Lab 2/NetworksLab2/NetworksLab2/Server/Account.cpp">
+			<Option target="NetworksLab2"/>
+		</Unit>
+		<Unit filename="C:/Users/ameen/Desktop/Networks/Assignments/Lab 2/NetworksLab2/NetworksLab2/Server/Account.h">
+			<Option target="NetworksLab2"/>
+		</Unit>
 		<Unit filename="C:/Users/ameen/Desktop/Networks/Assignments/Lab 2/NetworksLab2/NetworksLab2/Server/serverfunctions.cpp">
 			<Option target="NetworksLab2"/>
 		</Unit>

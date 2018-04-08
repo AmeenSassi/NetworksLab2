@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
+#include <vector>
 #include <netdb.h>
 #include <sys/types.h>
 #include <netinet/in.h>
@@ -34,6 +35,10 @@ void addUser(int new_fd, int numbytes, char* recvbuf){
 
     if(!userExists(username)) {
         Account newAcc = Account(username, password, name, phone, email);
+        ofstream outputFile;
+        outputFile.open("username.txt");
+        outputFile << username << endl;
+        outputFile.close();
         mess = "S";
         send(new_fd, mess, 128, 0);
         //figure out what to send back.
@@ -45,27 +50,50 @@ void addUser(int new_fd, int numbytes, char* recvbuf){
 
 }
 
-void deleteUser(Account);
+void deleteUser(int new_fd, int numbytes, char* recvbuf, Account* acc){
+    char* mess;
+    fstream outputFile;
+    outputFile.open("userList.txt");
+    string user;
+    vector<string> userList;
+    if(userExists(acc->getUsername())) {
+        string theuser = acc->getUsername();
+        string filename = theuser + ".txt";
+        remove(filename);
+        while (!outputFile.eof()) {
+            getline(outputFile, user, '\n');
+            if (!user.compare(theuser)) {
+                userList.push_back(user);
+            }
+        }
+        outputFile.close();
+        remove("userList.txt");
+        outputFile.open("userList.txt");
+        for (vector<string>::const_iterator i = userList.begin(); i != userList.end(); ++i) {
+            outputFile << *i << endl;
+        }
+        outputFile.close();
+    }
+    else {
+        mess = "EU";
+        send(new_fd, mess, 128, 0);
+    }
+}
 
 void updateUser(int new_fd, int numbytes, char* recvbuf, Account* acc){
     char* mess;
-
-    numbytes = recv(new_fd,recvbuf,128,0);
-    acc->setUsername(recvbuf);
-    numbytes = recv(new_fd,recvbuf,128,0);
-    acc->setPassword(recvbuf);
-    numbytes = recv(new_fd,recvbuf,128,0);
-    acc->setName(recvbuf);
-    numbytes = recv(new_fd,recvbuf,128,0);
-    acc->setNumber(recvbuf);
-    numbytes = recv(new_fd,recvbuf,128,0);
-    acc->setEmail(recvbuf);
-
-    if(userExists(username)) {
-        acc = Account(username, password, name, phone, email);
+    if(userExists(acc->getUsername())) {
+        //figure out what to send back.
+        numbytes = recv(new_fd, recvbuf, 128, 0);
+        acc->setPassword(recvbuf);
+        numbytes = recv(new_fd, recvbuf, 128, 0);
+        acc->setName(recvbuf);
+        numbytes = recv(new_fd, recvbuf, 128, 0);
+        acc->setNumber(recvbuf);
+        numbytes = recv(new_fd, recvbuf, 128, 0);
+        acc->setEmail(recvbuf);
         mess = "S";
         send(new_fd, mess, 128, 0);
-        //figure out what to send back.
     }
     else{
         mess = "EU";
@@ -100,34 +128,34 @@ void Login(int new_fd, int numbytes, char* recvbuf){
     }
 }
 
-//Appointment functions
-void addApp(Account*){
+void Logout(int new_fd, int numbytes, char* recvbuf, Account* acc){
+    ofstream outputFile;
+    string username = acc->getUsername();
+    string filename = username + ".txt";
+    outputFile.open(filename);
+    outputFile << acc->getUsername() << endl;
+    outputFile << acc->getPassword() << endl;
+    outputFile << acc->getName() << endl;
+    outputFile << acc->getEmail() << endl;
+    outputFile << acc->getNumber() << endl;
+    int appNum = 0;
+    for (vector<Appointment>::const_iterator i = acc->apps.begin(); i != acc->apps.end(); ++i) {
+        cout << appNum << endl;
+        cout << i->startDate + ", " + i->startTime + "." << endl;
+        cout << i->endDate + ", " + i->endTime + "." << endl;
+        cout << i->location + "." << endl;
+        cout << i->event + "." << endl;
+        appNum++;
+    }
+
 
 }
 
-void removeApp(Account*, int);
-
-void updateApp(Account* acc, int appNum) {
-    Account user;
-    *user = acc;
-
-    acc->apps[appNum].;
-
-
-}
-
-void displayAll(Account* user) {
-    Account acc = user;
-
-
-}
-
-//Basic functions
 Account getUser(string uname){
-    string file = uname + ".txt";
+    string outputFile = uname + ".txt";
     ifstream userList;
     Account userAccount;
-    userList.open(file);
+    userList.open(outputFile);
     while(!userList.eof()){
 
         string user;
@@ -177,5 +205,22 @@ bool userExists(string uname){
         }
     }
     return false;
+}
+
+void updateApp(Account* acc, int appNum, string st, string et, string sd, string ed, string ev, string loc, string uname) {
+    Appointment app;
+    app = acc->getApp(appNum);
+    app.startTime = st;
+    app.endTime = et;
+    app.startDate = sd;
+    app.endDate = ed;
+    app.event = ev;
+    app.location = loc;
+    app.username = uname;
+    acc->setApp(appNum, app);
+}
+
+void displayAll(Account* acc) {
+    acc->printSchedule();
 }
 #endif

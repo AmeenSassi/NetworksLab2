@@ -17,6 +17,15 @@ Account::Account(string uname, string pass, string n, string phone, string mail)
     this->email = mail;
 }
 
+Account::Account(){
+    this->username = "No username found.";
+    this->password = "pass not found.";
+    this->name = "name not found.";
+    this->number = "phone not found.";
+    this->email = "email not found.";
+
+}
+
 void Account::setUsername(string uname){
     this->username = uname;
 }
@@ -53,12 +62,24 @@ string Account::getNumber(){
     return this->number;
 }
 
-string Account::getEmail(){
+string Account::getEmail() {
     return this->email;
 }
 
+Appointment Account::getApp(int i){
+    return apps.[i];
+}
+
+void Account::setApp(int i, Appointment app){
+    this->apps.[i] = app;
+}
+
+void Account::removeApp(int i){
+    this->apps.erase(apps.begin() + i);
+}
+
 void Account::AddApp(string sd, string st, string ed, string et, string loc, string ev){
-    Appointments newApp;
+    Appointment newApp;
     newApp.username = getUsername();
     newApp.startDate = sd;
     newApp.startTime = st;
@@ -71,13 +92,16 @@ void Account::AddApp(string sd, string st, string ed, string et, string loc, str
 
 void Account::printSchedule(){
     int appNum = 0;
-
-    for (vector<Appointments>::const_iterator i = apps.begin(); i != apps.end(); ++i){
-        appNum++;
+    for (vector<Appointment>::const_iterator i = apps.begin(); i != apps.end(); ++i) {
         cout << appNum << endl;
         cout << i->startDate + ", " + i->startTime + "." << endl;
         cout << i->endDate + ", " + i->endTime + "." << endl;
         cout << i->location + "." << endl;
         cout << i->event + "." << endl;
+        appNum++;
     }
+}
+
+void Account::uploadApps(string filename){
+    fstream
 }

@@ -22,14 +22,14 @@ void SignUp();
 void deleteUser(Account);
 void updateUser(int, int, char*, Account);
 void Login(int, int, char*, Account);
+bool userExists(string uname);
+vector<string> getUserList();
 
 //Appointment functions
-void addApp(Account);
-void removeApp(Account);
 void updateApp(Account);
 void displayApps(Account);
 
 //Basic functions
-Account getUser(string);
+Account getUser(string uname);
 
 #endif

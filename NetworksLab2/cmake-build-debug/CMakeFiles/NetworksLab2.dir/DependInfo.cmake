@@ -4,6 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "C:/Users/ameen/Desktop/Networks/Assignments/Lab 2/NetworksLab2/NetworksLab2/Server/Account.cpp" "C:/Users/ameen/Desktop/Networks/Assignments/Lab 2/NetworksLab2/NetworksLab2/cmake-build-debug/CMakeFiles/NetworksLab2.dir/Server/Account.cpp.obj"
   "C:/Users/ameen/Desktop/Networks/Assignments/Lab 2/NetworksLab2/NetworksLab2/Server/serverfunctions.cpp" "C:/Users/ameen/Desktop/Networks/Assignments/Lab 2/NetworksLab2/NetworksLab2/cmake-build-debug/CMakeFiles/NetworksLab2.dir/Server/serverfunctions.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
