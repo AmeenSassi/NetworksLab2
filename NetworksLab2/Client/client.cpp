@@ -51,6 +51,8 @@ int main(int argc, char *argv[])
 
     printf("connection has been established with server. Type any message for server\n");
 
+    menu(sockfd, numbytes, sendbuf);
+
     for(;;) {
     	gets(sendbuf);
     	numbytes=sizeof(sendbuf);

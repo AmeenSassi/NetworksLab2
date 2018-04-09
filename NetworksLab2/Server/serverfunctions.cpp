@@ -18,8 +18,110 @@
 
 using namespace std;
 
+void menu(int new_fd, int numbytes, char* recvbuf){
+    char* mess;
+    bool exit1 = false;
+    bool login = false;
+    string received;
+    Account acc;
+    while(!exit1){
+        numbytes = recv(new_fd, recvbuf, 128, 0);
+        received = recvbuf;
+        if(received.compare("St1")){ // St1: Login
+            mess = "St1.1";
+            send(new_fd, mess, 128, 0);
+            if(Login(new_fd, numbytes, recvbuf, *acc)){
+                login = true;
+            }
+        }
+        else if (received.compare("St2")) { // St2: Sign Up
+            mess = "St2.1";
+            send(new_fd, mess, 128, 0);
+            if(signUp(new_fd, numbytes, recvbuf, *acc)){
+                login = true;
+            }
+        }
+        else if (received.compare("St3")) { // St3: Exit
+            exit1 = true;
+        }
+        else {
+            login = false;
+        }
+        while(login){
+            mess = "F";
+            send(new_fd, mess, 128, 0);
+            numbytes = recv(new_fd, recvbuf, 128, 0);
+            received = recvbuf;
+            if(received.compare("F1")){ //Delete a User
+                deleteUser(new_fd, numbytes, recvbuf, *acc);
+                login = false;
+            }
+            else if(received.compare("F2")){ //Update a User
+                updateUser(new_fd, numbytes, recvbuf, *acc);
+            }
+            else if(received.compare("F3")){ //Add Appointment
+                addApp(new_fd, numbytes, recvbuf, *acc);
+            }
+            else if(received.compare("F4")) { //Remove Appointment
+                mess = acc.getNumApp();
+                send(new_fd, mess, 128, 0);
+                numbytes = recv(new_fd, recvbuf, 128, 0);
+                received = recvbuf;
+                if(received < acc.getNumApp()){
+                    acc.removeApp(stoi(received));
+                }
+            }
+            else if(received.compare("F5")) { //Update Appointment
+                mess = acc.getNumApp();
+                send(new_fd, mess, 128, 0);
+                numbytes = recv(new_fd, recvbuf, 128, 0);
+                mess = recvbuf;
+                int num = stoi(mess);
+                if(num < acc.getNumApp()) {
+                    numbytes = recv(new_fd, recvbuf, 128, 0);
+                    string sd = recvbuf;
+                    numbytes = recv(new_fd, recvbuf, 128, 0);
+                    string ed = recvbuf;
+                    numbytes = recv(new_fd, recvbuf, 128, 0);
+                    string st = recvbuf;
+                    numbytes = recv(new_fd, recvbuf, 128, 0);
+                    string et = recvbuf;
+                    numbytes = recv(new_fd, recvbuf, 128, 0);
+                    string loc = recvbuf;
+                    numbytes = recv(new_fd, recvbuf, 128, 0);
+                    string ev = recvbuf;
+                    updateApp(*acc, num, st, et, sd, ed, ev, loc, (acc.getUsername()));
+                }
+            }
+            else if(received.compare("F6")) { //Display Appointments
+                numbytes = recv(new_fd, recvbuf, 128, 0);
+                received = recvbuf;
+                if(received.compare("DA1")){ //Display ALL
+                    displayAll(*acc);
+                }
+                /*else if(received.compare("DA2")){ //Display for certain date
+                    mess = "DA21";
+                    send(new_fd, mess, 128, 0);
+                    numbytes = recv(new_fd, recvbuf, 128, 0);
+                    received = recvbuf;
+                    if(received.compare("D1")) {
+                        mess = "D12";
+                        send(new_fd, mess, 128, 0);
+                        numbytes = recv(new_fd, recvbuf, 128, 0);
+                        received = recvbuf;
+                        acc.printSchedule(new_fd, numbytes, recvbuf, stoi(received));
+                    }*/
+            }
+            else if(received.compare("F7")) { //Log Out
+                Logout(new_fd, numbytes, recvbuf, *acc);
+            }
+        }
+    }
+}
+
+
 //User functions
-void addUser(int new_fd, int numbytes, char* recvbuf){
+bool SignUp(int new_fd, int numbytes, char* recvbuf, Account* acc){
     char* mess;
 
     numbytes = recv(new_fd,recvbuf,128,0);
@@ -34,23 +136,24 @@ void addUser(int new_fd, int numbytes, char* recvbuf){
     string email = recvbuf;
 
     if(!userExists(username)) {
-        Account newAcc = Account(username, password, name, phone, email);
+        acc = Account(username, password, name, phone, email);
         ofstream outputFile;
         outputFile.open("username.txt");
         outputFile << username << endl;
         outputFile.close();
         mess = "S";
         send(new_fd, mess, 128, 0);
-        //figure out what to send back.
+        return true;
     }
     else{
         mess = "EU";
         send(new_fd, mess, 128, 0);
+        return false;
     }
 
 }
 
-void deleteUser(int new_fd, int numbytes, char* recvbuf, Account* acc){
+bool deleteUser(int new_fd, int numbytes, char* recvbuf, Account* acc){
     char* mess;
     fstream outputFile;
     outputFile.open("userList.txt");
@@ -73,14 +176,18 @@ void deleteUser(int new_fd, int numbytes, char* recvbuf, Account* acc){
             outputFile << *i << endl;
         }
         outputFile.close();
+        mess = "DU";
+        send(new_fd, mess, 128, 0);
+        return true;
     }
     else {
         mess = "EU";
         send(new_fd, mess, 128, 0);
+        return false;
     }
 }
 
-void updateUser(int new_fd, int numbytes, char* recvbuf, Account* acc){
+bool updateUser(int new_fd, int numbytes, char* recvbuf, Account* acc){
     char* mess;
     if(userExists(acc->getUsername())) {
         //figure out what to send back.
@@ -94,16 +201,17 @@ void updateUser(int new_fd, int numbytes, char* recvbuf, Account* acc){
         acc->setEmail(recvbuf);
         mess = "S";
         send(new_fd, mess, 128, 0);
+        return true;
     }
     else{
         mess = "EU";
         send(new_fd, mess, 128, 0);
+        return false;
     }
 }
 
-void Login(int new_fd, int numbytes, char* recvbuf){
+bool Login(int new_fd, int numbytes, char* recvbuf, Account* acc){
     char* mess;
-
     numbytes = recv(new_fd,recvbuf,128,0);
     string username = recvbuf;
     numbytes = recv(new_fd,recvbuf,128,0);
@@ -112,19 +220,21 @@ void Login(int new_fd, int numbytes, char* recvbuf){
     if(userExists(username)) {
         //add code to find, open file and parse it.
         if(passVerify(password)) {
-            Account acc = getUser(username);
+            acc = getUser(username);
             mess = "S";
             send(new_fd, mess, 128, 0);
-            // Now what?
+            return true;
         }
         else{
             mess = "EP";
             send(new_fd, mess, 128, 0);
+            return false;
         }
     }
     else{
         mess = "EU";
         send(new_fd, mess, 128, 0);
+        return false;
     }
 }
 
@@ -140,15 +250,29 @@ void Logout(int new_fd, int numbytes, char* recvbuf, Account* acc){
     outputFile << acc->getNumber() << endl;
     int appNum = 0;
     for (vector<Appointment>::const_iterator i = acc->apps.begin(); i != acc->apps.end(); ++i) {
-        cout << appNum << endl;
-        cout << i->startDate + ", " + i->startTime + "." << endl;
-        cout << i->endDate + ", " + i->endTime + "." << endl;
-        cout << i->location + "." << endl;
-        cout << i->event + "." << endl;
+        outputFile << appNum << endl;
+        outputFile << i->startDate + ", " + i->startTime + "." << endl;
+        outputFile << i->endDate + ", " + i->endTime + "." << endl;
+        outputFile << i->location + "." << endl;
+        outputFile << i->event + "." << endl;
         appNum++;
     }
+}
 
-
+void addApp(int new_fd, int numbytes, char* recvbuf, Account* acc){
+    mess = "AA";
+    send(new_fd, mess, 128, 0);
+    numbytes = recv(new_fd, recvbuf, 128, 0);
+    string sd = recvbuf;
+    numbytes = recv(new_fd, recvbuf, 128, 0);
+    string ed = recvbuf;
+    numbytes = recv(new_fd, recvbuf, 128, 0);
+    string st = recvbuf;
+    numbytes = recv(new_fd, recvbuf, 128, 0);
+    string loc = recvbuf;
+    numbytes = recv(new_fd, recvbuf, 128, 0);
+    string ev = recvbuf;
+    acc->AddApp(sd, st, ed, et, loc, ev);
 }
 
 Account getUser(string uname){
@@ -209,18 +333,21 @@ bool userExists(string uname){
 
 void updateApp(Account* acc, int appNum, string st, string et, string sd, string ed, string ev, string loc, string uname) {
     Appointment app;
-    app = acc->getApp(appNum);
-    app.startTime = st;
-    app.endTime = et;
-    app.startDate = sd;
-    app.endDate = ed;
-    app.event = ev;
-    app.location = loc;
-    app.username = uname;
-    acc->setApp(appNum, app);
+    if(appNum < acc->getNumApp()) {
+        app = acc->getApp(appNum);
+        app.startTime = st;
+        app.endTime = et;
+        app.startDate = sd;
+        app.endDate = ed;
+        app.event = ev;
+        app.location = loc;
+        app.username = uname;
+        acc->setApp(appNum, app);
+    }
 }
 
-void displayAll(Account* acc) {
-    acc->printSchedule();
+void displayAll(int new_fd, Account* acc) {
+    acc->printSchedule(new_fd);
 }
+
 #endif

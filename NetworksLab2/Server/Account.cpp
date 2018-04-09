@@ -90,18 +90,25 @@ void Account::AddApp(string sd, string st, string ed, string et, string loc, str
     this->apps.push_back(newApp);
 }
 
-void Account::printSchedule(){
+void Account::printSchedule(int new_fd){
     int appNum = 0;
+    string mess = getNumApp();
+    send(new_fd, mess, 128, 0);
     for (vector<Appointment>::const_iterator i = apps.begin(); i != apps.end(); ++i) {
-        cout << appNum << endl;
-        cout << i->startDate + ", " + i->startTime + "." << endl;
-        cout << i->endDate + ", " + i->endTime + "." << endl;
-        cout << i->location + "." << endl;
-        cout << i->event + "." << endl;
+        mess = appNum;
+        send(new_fd, mess, 128, 0);
+        mess = i->startDate + ", " + i->startTime + ".";
+        send(new_fd, mess, 128, 0);
+        mess = i->endDate + ", " + i->endTime + ".";
+        send(new_fd, mess, 128, 0);
+        mess = i->location + ".";
+        send(new_fd, mess, 128, 0);
+        mess = i->event + ".";
+        send(new_fd, mess, 128, 0);
         appNum++;
     }
 }
 
-void Account::uploadApps(string filename){
-    fstream
+int getNumApp(){
+    return apps.size();
 }

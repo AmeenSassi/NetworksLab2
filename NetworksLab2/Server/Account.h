@@ -59,9 +59,10 @@ class Account {
             string getName();
             string getNumber();
             string getEmail();
+            int getNumApp();
 
-            void printSchedule();
-            void uploadApps(string);
+            void printSchedule(int, int, char*);
+            void printSchedule(int, int, char*, int);
 };
 
 #endif

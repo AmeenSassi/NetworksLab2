@@ -13,6 +13,7 @@
 #include <arpa/inet.h>
 #include <sys/wait.h>
 #include <signal.h>
+#include "serverfunctions.h"
 
 #define MYPORT 3490    // the port users will be connecting to
 
@@ -79,6 +80,7 @@ int main(void)
         if (!fork()) { // this is the child process
             close(sockfd); // child doesn't need the listener
 	        recvbuf=(char *) calloc(128,sizeof(char));
+	        menu(new_fd, numbytes, recvbuf);
             for(;;) {
 	    	numbytes=recv(new_fd,recvbuf,128,0);
 		if (numbytes < 0) {

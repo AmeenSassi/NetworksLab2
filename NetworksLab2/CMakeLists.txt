@@ -3,5 +3,5 @@ project(NetworksLab2)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES Server/serverfunctions.cpp Server/Account.cpp)
+set(SOURCE_FILES Server/serverfunctions.cpp Server/Account.cpp Client/clientfunctions.cpp)
 add_executable(NetworksLab2 ${SOURCE_FILES})
